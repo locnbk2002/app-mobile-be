@@ -10,7 +10,7 @@ import {
 import { TransactionsService } from './transactions.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
-import { ApiBearerAuth, ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @ApiTags('transactions')
@@ -19,34 +19,30 @@ export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
 
   @Post()
-  @ApiExcludeEndpoint()
-  create(@Body() createTransactionDto: CreateTransactionDto) {
-    return this.transactionsService.create(createTransactionDto);
+  async create(@Body() createTransactionDto: CreateTransactionDto) {
+    return await this.transactionsService.create(createTransactionDto);
   }
 
   @Get()
-  findAll() {
-    return this.transactionsService.findAll();
+  async findAll() {
+    return await this.transactionsService.findAll();
   }
 
   @Get(':id')
-  @ApiExcludeEndpoint()
-  findOne(@Param('id') id: string) {
-    return this.transactionsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.transactionsService.findOne(id);
   }
 
   @Patch(':id')
-  @ApiExcludeEndpoint()
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateTransactionDto: UpdateTransactionDto,
   ) {
-    return this.transactionsService.update(+id, updateTransactionDto);
+    return await this.transactionsService.update(id, updateTransactionDto);
   }
 
   @Delete(':id')
-  @ApiExcludeEndpoint()
-  remove(@Param('id') id: string) {
-    return this.transactionsService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.transactionsService.remove(id);
   }
 }
