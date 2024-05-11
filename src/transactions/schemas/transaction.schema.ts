@@ -8,7 +8,7 @@ export type TransactionDocument = HydratedDocument<Transaction>;
 export class Transaction {
   @Prop()
   @ApiProperty({ required: true })
-  userId: number;
+  userId: string;
 
   @Prop()
   @ApiProperty()
@@ -16,7 +16,15 @@ export class Transaction {
 
   @Prop()
   @ApiProperty()
-  trasactionDateTime: Date;
+  currency: string;
+
+  @Prop()
+  @ApiProperty()
+  type: string;
+
+  @Prop()
+  @ApiProperty()
+  transactionDateTime: Date;
 
   @Prop({ required: true })
   createdAt: Date;

@@ -1,45 +1,30 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Post, Body, Logger } from '@nestjs/common';
+import { ConflictException } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { ApiProperty, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-@ApiBearerAuth()
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
-
-  @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
-    return await this.usersService.create(createUserDto);
+  logger: Logger;
+  constructor(private readonly userService: UsersService) {
+    this.logger = new Logger(UsersController.name);
   }
 
-  @Get()
-  async findAll() {
-    return await this.usersService.findAll();
-  }
-
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return await this.usersService.findOne(id);
-  }
-
-  @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return await this.usersService.update(id, updateUserDto);
-  }
-
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return await this.usersService.remove(id);
+  @Post('')
+  @ApiProperty()
+  async create(@Body() createUserDto: CreateUserDto): Promise<any> {
+    const newUser = createUserDto;
+    try {
+      const query = { email: newUser.email };
+      const isUser = await this.userService.findOne(query);
+      if (isUser) throw new ConflictException('User Already Exist');
+      const user = await this.userService.create(newUser);
+      return user;
+    } catch (err) {
+      this.logger.error('Something went wrong in signup:', err);
+      throw err;
+    }
   }
 }
