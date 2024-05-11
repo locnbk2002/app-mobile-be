@@ -14,9 +14,13 @@ export class User {
   @ApiProperty()
   lastName: string;
 
-  @Prop({ required: true })
+  @Prop({ lowercase: true, required: true })
   @ApiProperty()
   email: string;
+
+  @Prop({ select: false })
+  @ApiProperty()
+  password: string;
 
   @Prop()
   @ApiProperty()
