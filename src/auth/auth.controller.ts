@@ -12,8 +12,8 @@ import { JwtAuthGuard } from './jwt-auth.guard';
 import { ApiBearerAuth, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { Body } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
-import { User } from 'src/users/schemas/user.schema';
 import { LoginToken } from './dto/login-token.dto';
+import { GetUserDto } from 'src/users/dto/get-user.dto';
 
 @ApiBearerAuth()
 @ApiTags('auth')
@@ -38,7 +38,13 @@ export class AuthController {
   @Get('viewProfile')
   @UseGuards(JwtAuthGuard)
   @ApiProperty()
-  async viewProfile(@Request() req: any): Promise<User> {
-    return req.user;
+  async viewProfile(@Request() req: any): Promise<GetUserDto> {
+    const userInfo: GetUserDto = {
+      firstName: req.user.firstName,
+      lastName: req.user.lastName,
+      email: req.user.email,
+      address: req.user.address,
+    };
+    return userInfo;
   }
 }
