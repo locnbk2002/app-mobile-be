@@ -13,6 +13,9 @@ export class CreateTransactionDto {
   @IsString()
   category: string;
 
+  @IsString()
+  note: string;
+
   @IsDate()
   readonly transactionDateTime: string;
 }
