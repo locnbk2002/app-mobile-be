@@ -1,8 +1,17 @@
-import { IsDate, IsNumber } from 'class-validator';
+import { IsDate, IsNumber, IsString } from 'class-validator';
 
 export class CreateTransactionDto {
   @IsNumber()
   readonly amount: number;
+
+  @IsString()
+  currency: string;
+
+  @IsString()
+  type: string;
+
+  @IsString()
+  category: string;
 
   @IsDate()
   readonly transactionDateTime: string;

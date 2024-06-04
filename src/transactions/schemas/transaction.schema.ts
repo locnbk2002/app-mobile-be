@@ -24,6 +24,10 @@ export class Transaction {
 
   @Prop()
   @ApiProperty()
+  category: string;
+
+  @Prop()
+  @ApiProperty()
   transactionDateTime: Date;
 
   @Prop({ required: true })
